@@ -32037,14 +32037,74 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TekstiKomponenttiLuokka).call(this, props));
     _this.state = {
+      status: "busy",
+      // "busy", "error", "ready"
       stateText: "Tekstikomponentin tekstiä",
       eimuutu: 4
     };
     _this.onStateTextChange = _this.onStateTextChange.bind(_assertThisInitialized(_this));
+    _this.didMountHandlerFunktio = _this.didMountHandlerFunktio.bind(_assertThisInitialized(_this));
     return _this;
-  }
+  } // Lifecyclet alkaa
+
 
   _createClass(TekstiKomponenttiLuokka, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // Tämä koodi ajetaan kun komponentti piirretään DOMiin. Ei ajeta jos komponentti on jo domissa.
+      // EI SAA MUOKATA TILAA!
+      // EI SAA MYÖSKÄÄN OLLA ASYNKRONINEN!
+      this.didMountHandlerFunktio();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {// Tämä koodi ajetaan kun komponentin propsit TAI tila päivittyy.
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {} // Tämä koodi ajetaan kun komponentti on katoamassa DOMista.
+    // Lifecyclet loppuu
+    // Esimerkkifunktio mitä käyttää componentDidMountissa ja hakee asynkronisesti matskua ja päivittää sillä tilaa
+
+  }, {
+    key: "didMountHandlerFunktio",
+    value: function didMountHandlerFunktio() {
+      var _this2 = this;
+
+      /* async await malli
+      try {
+        // Näytetään että tehdään jotain
+        this.setState({status: "busy"});
+        const result = await new Promise(resolve => setTimeout(() => resolve("Viiveellä tekstiä"), 2000)); // Palikka ja tuskin toimii mut anyway
+        // Näytetään että ollaan valmiit ja tallennetaan tulos
+        this.setState({status: "ready", stateText: result});
+      } catch(_) {
+        // Laitetaan virheeseen jos ei mennyt ihan putkeen
+        this.setState({status: "error"});
+      }
+      */
+      // Näytetään että tehdään jotain
+      this.setState({
+        status: "busy"
+      });
+      new Promise(function (resolve) {
+        return setTimeout(function () {
+          return resolve("Viiveellä tekstiä");
+        }, 2000);
+      }).then(function (result) {
+        // Näytetään että ollaan valmiit ja tallennetaan tulos
+        _this2.setState({
+          status: "ready",
+          stateText: result
+        });
+      }).catch(function () {
+        // Laitetaan virheeseen jos ei mennyt ihan putkeen
+        _this2.setState({
+          status: "error"
+        });
+      });
+    }
+  }, {
     key: "onStateTextChange",
     value: function onStateTextChange(event) {
       var inputValue = event.target.value;
@@ -32169,7 +32229,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35595" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36409" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -4,10 +4,59 @@ export class TekstiKomponenttiLuokka extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: "busy", // "busy", "error", "ready"
       stateText: "Tekstikomponentin tekstiä",
       eimuutu: 4
     }
     this.onStateTextChange = this.onStateTextChange.bind(this);
+    this.didMountHandlerFunktio = this.didMountHandlerFunktio.bind(this);
+  }
+
+  // Lifecyclet alkaa
+
+  componentDidMount() {
+    // Tämä koodi ajetaan kun komponentti piirretään DOMiin. Ei ajeta jos komponentti on jo domissa.
+    // EI SAA MUOKATA TILAA!
+    // EI SAA MYÖSKÄÄN OLLA ASYNKRONINEN!
+    this.didMountHandlerFunktio();
+  }
+
+  componentDidUpdate() {
+    // Tämä koodi ajetaan kun komponentin propsit TAI tila päivittyy.
+  }
+
+  componentWillUnmount() {
+    // Tämä koodi ajetaan kun komponentti on katoamassa DOMista.
+  }
+
+  // Lifecyclet loppuu
+
+  // Esimerkkifunktio mitä käyttää componentDidMountissa ja hakee asynkronisesti matskua ja päivittää sillä tilaa
+  didMountHandlerFunktio() {
+
+    /* async await malli
+try {
+      // Näytetään että tehdään jotain
+      this.setState({status: "busy"});
+      const result = await new Promise(resolve => setTimeout(() => resolve("Viiveellä tekstiä"), 2000)); // Palikka ja tuskin toimii mut anyway
+      // Näytetään että ollaan valmiit ja tallennetaan tulos
+      this.setState({status: "ready", stateText: result});
+    } catch(_) {
+      // Laitetaan virheeseen jos ei mennyt ihan putkeen
+      this.setState({status: "error"});
+    }
+    */
+
+    // Näytetään että tehdään jotain
+   this.setState({status: "busy"});
+   new Promise(resolve => setTimeout(() => resolve("Viiveellä tekstiä"), 2000))
+    .then(result => {
+      // Näytetään että ollaan valmiit ja tallennetaan tulos
+      this.setState({status: "ready", stateText: result});
+    }).catch(() => {
+      // Laitetaan virheeseen jos ei mennyt ihan putkeen
+      this.setState({status: "error"});
+    })
   }
 
   onStateTextChange(event) {
