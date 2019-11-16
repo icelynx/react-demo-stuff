@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {App} from './App'
+import {UusiApp} from './uusiapp/UusiApp'
 
 ReactDOM.render(
-  <App testiprop="Olen testi6" />,
+  <UusiApp />,
   document.getElementById('root')
 );
